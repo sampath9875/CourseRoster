@@ -15,13 +15,13 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 /**
- * @author azureUser
+ * @author M1030496
  *
  */
 @Component
 @Entity
-@Table(name = "Volunteer_Register")
-public class Registration {
+@Table(name = "Volunteer_Course_Register")
+public class CourseRegistration {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,31 +40,14 @@ public class Registration {
 	@Column(name = "Volunteer_phoneno", nullable = false)
 	private String volunteerPhoneno;
 
-	@ManyToOne(targetEntity = Event.class)
-	@JoinColumn(name = "Event_Id", nullable = false)
-	private Event event;
+	@ManyToOne(targetEntity = Course.class)
+	@JoinColumn(name = "Course_Id", nullable = false)
+	private Course course;
 
 	/**
 	 * 
 	 */
-	public Registration() {
-	}
-
-	/**
-	 * @param volunteerId
-	 * @param volunteerName
-	 * @param volunteerEmail
-	 * @param volunteerPhoneno
-	 * @param event
-	 */
-	public Registration(String volunteerId, String volunteerName, String volunteerEmail, String volunteerPhoneno,
-			Event event) {
-		super();
-		this.volunteerId = volunteerId;
-		this.volunteerName = volunteerName;
-		this.volunteerEmail = volunteerEmail;
-		this.volunteerPhoneno = volunteerPhoneno;
-		this.event = event;
+	public CourseRegistration() {
 	}
 
 	/**
@@ -73,17 +56,17 @@ public class Registration {
 	 * @param volunteerName
 	 * @param volunteerEmail
 	 * @param volunteerPhoneno
-	 * @param event
+	 * @param course
 	 */
-	public Registration(int registrationId, String volunteerId, String volunteerName, String volunteerEmail,
-			String volunteerPhoneno, Event event) {
+	public CourseRegistration(int registrationId, String volunteerId, String volunteerName, String volunteerEmail,
+			String volunteerPhoneno, Course course) {
 		super();
 		this.registrationId = registrationId;
 		this.volunteerId = volunteerId;
 		this.volunteerName = volunteerName;
 		this.volunteerEmail = volunteerEmail;
 		this.volunteerPhoneno = volunteerPhoneno;
-		this.event = event;
+		this.course = course;
 	}
 
 	/**
@@ -162,17 +145,30 @@ public class Registration {
 	}
 
 	/**
-	 * @return the event
+	 * @return the course
 	 */
-	public Event getEvent() {
-		return event;
+	public Course getCourse() {
+		return course;
 	}
 
 	/**
-	 * @param event
-	 *            the event to set
+	 * @param course
+	 *            the course to set
 	 */
-	public void setEvent(Event event) {
-		this.event = event;
+	public void setCourse(Course course) {
+		this.course = course;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
+	@Override
+	public String toString() {
+		return "CourseRegistration [registrationId=" + registrationId + ", volunteerId=" + volunteerId
+				+ ", volunteerName=" + volunteerName + ", volunteerEmail=" + volunteerEmail + ", volunteerPhoneno="
+				+ volunteerPhoneno + ", course=" + course + "]";
+	}
+
 }

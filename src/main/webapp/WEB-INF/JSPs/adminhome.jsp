@@ -21,14 +21,14 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
-<title>Home Social App</title>
+<title>Home Course Roster</title>
 </head>
 <body style="background-color: lavendar; overflow: hidden">
 	<jsp:include page="adminheader.jsp" />
 	<div class="container">
 		<div class="row">
 			<div class="jumbotron">
-				<h2>Social App</h2>
+				<h2>Course Roster</h2>
 				<p>Welcome to the Admin Home page</p>
 			</div>
 		</div>
@@ -44,13 +44,13 @@
 			</div>
 		</div>
 	</jstl:if>
-	<jstl:if test="${eventId!=null}">
+	<jstl:if test="${entityId!=null}">
 		<div class="container">
 			<div class="row">
 				<div class="jumbotron">
 					<div>
 						<jstl:out
-							value="Event Successfully registered with Id: ${eventId}"></jstl:out>
+							value="${entity} Successfully registered with Id: ${entityId}"></jstl:out>
 					</div>
 				</div>
 			</div>
@@ -70,21 +70,28 @@
 	</jstl:if>
 	<div class="container">
 		<div class="row">
-			<div class="col-md-5">
+			<div class="col-md-4">
 				<div class="jumbotron">
 					<p>Register Events</p>
-					<h4>Click here to register events</h4>
+					<h5>Click here to register events</h5>
 					<a href="registerevents.get" class="btn btn-primary">Register
 						Events</a>
 				</div>
 			</div>
-			<div class="col-md-2"></div>
-			<div class="col-md-5">
+			<div class="col-md-4">
+			<div class="jumbotron">
+			<p>Register Courses</p>
+					<h5>Click here to register Courses</h5>
+					<a href="registercourse.get" class="btn btn-primary">Register
+						Courses</a>
+			</div>
+			</div>
+			<div class="col-md-4">
 				<div class="jumbotron">
 					<p>View Events</p>
-					<h4>Click here to view Events</h4>
+					<h5>Click here to view Events</h5>
 					<a href="adminviewevents.get" class="btn btn-primary">View
-						Events/Volunteers</a>
+						Events/Courses/Volunteers</a>
 				</div>
 			</div>
 		</div>

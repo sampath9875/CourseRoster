@@ -22,11 +22,12 @@
 		<nav class="navbar navbar-custom">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="home">Socail App</a>
+					<a class="navbar-brand" href="home">Course Roster</a>
 				</div>
 				<ul class="nav navbar-nav">
-					<li><a href="registration.get">Registration</a></li>
-					<li><a href="viewevents.get">Events Information</a></li>
+					<!-- <li><a href="registration.get">Registration</a></li> -->
+					<li><a href="viewevents.get">Events</a></li>
+					<li><a href="viewcourses.get">Courses</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="adminsignup.get"><span

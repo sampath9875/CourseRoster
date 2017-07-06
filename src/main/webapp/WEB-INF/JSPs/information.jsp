@@ -25,26 +25,59 @@
 	<jsp:include page="header.jsp" />
 	<div class="container">
 		<table class="table table-striped">
-			<thead>
-				<tr class="info">
-					<th>Event Name</th>
-					<th>Event Date</th>
-					<th>Event Location</th>
-					<th>Event Details</th>
-					<th>Registration Link</th>
-				</tr>
-			</thead>
-			<tbody>
-				<jstl:forEach items="${events}" var="event">
-					<tr>
-						<td><jstl:out value="${event.eventName}"></jstl:out></td>
-						<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
-						<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
-						<td><jstl:out value="${event.eventDetails}"></jstl:out></td>
-						<td><a href="registration.get">Click to Register</a></td>
+			<jstl:if test="${entity == 0 }">
+				<thead>
+					<tr class="info">
+						<th>Event Name</th>
+						<th>Event Date</th>
+						<th>Event Location</th>
+						<th>Event Details</th>
+						<th>Registration Link</th>
+						<th>Calendar Link</th>
 					</tr>
-				</jstl:forEach>
-			</tbody>
+				</thead>
+				<tbody>
+					<jstl:forEach items="${events}" var="event">
+						<tr>
+							<td><jstl:out value="${event.eventName}"></jstl:out></td>
+							<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
+							<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
+							<td><jstl:out value="${event.eventDetails}"></jstl:out></td>
+							<td><a href="registration.get?entity=event">Click to
+									Register</a></td>
+							<td><a href="getCalendar?entity=Event&id=${event.eventId}">Click
+										here to download the event Calendar</a>
+						</tr>
+					</jstl:forEach>
+				</tbody>
+			</jstl:if>
+			<jstl:if test="${entity == 1 }">
+				<thead>
+					<tr class="info">
+						<th>Course Name</th>
+						<th>Course Date</th>
+						<th>Course Location</th>
+						<th>Course Details</th>
+						<th>Registration Link</th>
+						<th>Calendar Link</th>
+					</tr>
+				</thead>
+				<tbody>
+					<jstl:forEach items="${courses}" var="course">
+						<tr>
+							<td><jstl:out value="${course.courseName}"></jstl:out></td>
+							<td><jstl:out
+									value="${course.format(course.getStartDate())}"></jstl:out></td>
+							<td><jstl:out value="${course.location.locationDetails}"></jstl:out></td>
+							<td><jstl:out value="${course.courseDetails}"></jstl:out></td>
+							<td><a href="registration.get?entity=course">Click to
+									Register</a></td>
+							<td><a href="getCalendar?entity=Course&id=${course.courseId}">Click
+									here to download the event Calendar</a>
+						</tr>
+					</jstl:forEach>
+				</tbody>
+			</jstl:if>
 		</table>
 	</div>
 	<jsp:include page="footer.jsp" />

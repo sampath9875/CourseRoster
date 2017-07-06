@@ -20,34 +20,38 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
-<title>Event Information</title>
+<title>Course Information</title>
 </head>
 <body style="background-color: lavendar; overflow: hidden">
 	<jsp:include page="adminheader.jsp" />
 	<div class="container">
-		<h4>Events</h4>
+		<h4>Courses</h4>
 		<jstl:choose>
-			<jstl:when test="${fn:length(eventsSearch) gt 0}">
+			<jstl:when test="${fn:length(coursesSearch) gt 0}">
 				<table class="table table-striped">
 					<thead>
 						<tr class="info">
-							<th>Event Name</th>
-							<th>Event Date</th>
-							<th>Event Location</th>
+							<th>Course Name</th>
+							<th>Starts On</th>
+							<th>Ends On</th>
+							<th>Course Location</th>
 							<th>Registration Link</th>
 							<th>Calendar Link</th>
 						</tr>
 					</thead>
 					<tbody>
-						<jstl:forEach items="${eventsSearch}" var="event">
+						<jstl:forEach items="${coursesSearch}" var="course">
 							<tr>
-								<td><jstl:out value="${event.eventName}"></jstl:out></td>
-								<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
-								<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
-								<td><a href="viewVolunteers?eventId=${event.eventId}">Click
+								<td><jstl:out value="${course.courseName}"></jstl:out></td>
+								<td><jstl:out
+										value="${course.format(course.getStartDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.format(course.getEndDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.location.locationDetails}"></jstl:out></td>
+								<td><a href="viewVolunteers?courseId=${course.courseId}">Click
 										to View Registrations</a></td>
-								<td><a href="getCalendar?entity=Event&id=${event.eventId}">Click
-										here to download the event Calendar</a>
+								<td><a
+									href="getCalendar?entity=Course&id=${course.courseId}">Click
+										here to download the Course Calendar</a>
 							</tr>
 						</jstl:forEach>
 					</tbody>
@@ -55,74 +59,82 @@
 			</jstl:when>
 			<jstl:otherwise>
 				<div class="jumbotron">
-					<h4>There are no events for the given filters</h4>
+					<h4>There are no courses for the given filters</h4>
 					<p>Please click here to go to home page</p>
 					<a href="adminHome.get" class="btn btn-primary">Home</a>
 				</div>
 			</jstl:otherwise>
 		</jstl:choose>
-		<h4>Other Events on given location</h4>
+		<h4>Other Courses on given location</h4>
 		<jstl:choose>
-			<jstl:when test="${fn:length(eventsLocation) gt 0}">
+			<jstl:when test="${fn:length(coursesLocation) gt 0}">
 				<table class="table table-striped">
 					<thead>
 						<tr class="info">
-							<th>Event Name</th>
-							<th>Event Date</th>
-							<th>Event Location</th>
+							<th>Course Name</th>
+							<th>Starts On</th>
+							<th>Ends On</th>
+							<th>Course Location</th>
 							<th>Registration Link</th>
 							<th>Calendar Link</th>
 						</tr>
 					</thead>
 					<tbody>
-						<jstl:forEach items="${eventsLocation}" var="event">
+						<jstl:forEach items="${coursesLocation}" var="course">
 							<tr>
-								<td><jstl:out value="${event.eventName}"></jstl:out></td>
-								<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
-								<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
-								<td><a href="viewVolunteers?eventId=${event.eventId}">Click
+								<td><jstl:out value="${course.courseName}"></jstl:out></td>
+								<td><jstl:out
+										value="${course.format(course.getStartDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.format(course.getEndDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.location.locationDetails}"></jstl:out></td>
+								<td><a href="viewVolunteers?courseId=${course.courseId}">Click
 										to View Registrations</a></td>
-								<td><a href="getCalendar?entity=Event&id=${event.eventId}">Click
-										here to download the event Calendar</a>
+								<td><a
+									href="getCalendar?entity=Course&id=${course.courseId}">Click
+										here to download the Course Calendar</a>
 							</tr>
 						</jstl:forEach>
 					</tbody>
 				</table>
 			</jstl:when>
 			<jstl:otherwise>
-				<h5>There are no Other events for the given location</h5>
+				<h5>There are no Other courses for the given location</h5>
 			</jstl:otherwise>
 		</jstl:choose>
-		<h4>Other Events on given Date</h4>
+		<h4>Other Courses on given Date</h4>
 		<jstl:choose>
-			<jstl:when test="${fn:length(eventsDate) gt 0}">
+			<jstl:when test="${fn:length(coursesDate) gt 0}">
 				<table class="table table-striped">
 					<thead>
 						<tr class="info">
-							<th>Event Name</th>
-							<th>Event Date</th>
-							<th>Event Location</th>
+							<th>Course Name</th>
+							<th>Starts On</th>
+							<th>Ends On</th>
+							<th>Course Location</th>
 							<th>Registration Link</th>
 							<th>Calendar Link</th>
 						</tr>
 					</thead>
 					<tbody>
-						<jstl:forEach items="${eventsDate}" var="event">
+						<jstl:forEach items="${coursesDate}" var="course">
 							<tr>
-								<td><jstl:out value="${event.eventName}"></jstl:out></td>
-								<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
-								<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
-								<td><a href="viewVolunteers?eventId=${event.eventId}">Click
+								<td><jstl:out value="${course.courseName}"></jstl:out></td>
+								<td><jstl:out
+										value="${course.format(course.getStartDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.format(course.getEndDate())}"></jstl:out></td>
+								<td><jstl:out value="${course.location.locationDetails}"></jstl:out></td>
+								<td><a href="viewVolunteers?courseId=${course.courseId}">Click
 										to View Registrations</a></td>
-								<td><a href="getCalendar?entity=Event&id=${event.eventId}">Click
-										here to download the event Calendar</a>
+								<td><a
+									href="getCalendar?entity=Course&id=${course.courseId}">CLick
+										here to download the Course Calendar</a>
 							</tr>
 						</jstl:forEach>
 					</tbody>
 				</table>
 			</jstl:when>
 			<jstl:otherwise>
-				<h5>There are no Other events for the given Date</h5>
+				<h5>There are no Other courses for the given Date</h5>
 			</jstl:otherwise>
 		</jstl:choose>
 	</div>

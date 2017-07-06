@@ -4,7 +4,6 @@
 package com.mindtree.testingacademy.courseroster.controller;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -17,17 +16,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.mindtree.testingacademy.courseroster.entities.Course;
+import com.mindtree.testingacademy.courseroster.entities.CourseComparator;
+import com.mindtree.testingacademy.courseroster.entities.CourseRegistration;
 import com.mindtree.testingacademy.courseroster.entities.Event;
 import com.mindtree.testingacademy.courseroster.entities.EventComparator;
+import com.mindtree.testingacademy.courseroster.entities.EventRegistration;
 import com.mindtree.testingacademy.courseroster.entities.Location;
-import com.mindtree.testingacademy.courseroster.entities.Registration;
 import com.mindtree.testingacademy.courseroster.service.CourseRosterService;
 
 /**
@@ -38,7 +39,10 @@ import com.mindtree.testingacademy.courseroster.service.CourseRosterService;
 @Controller
 public class EventController {
 	@Autowired(required = true)
-	private Registration volunteer;
+	private EventRegistration volunteer;
+
+	@Autowired(required = true)
+	private CourseRegistration courseRegistration;
 
 	@Autowired
 	private CourseRosterService courseRosterService;
@@ -60,17 +64,25 @@ public class EventController {
 	}
 
 	@RequestMapping(value = "registration.get", method = RequestMethod.GET)
-	public ModelAndView register() {
+	public ModelAndView register(@RequestParam String entity) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		List<Location> locations = courseRosterService.getAllLocations();
 		map.put("locations", locations);
-		map.put("volunteer", volunteer);
-		return new ModelAndView("registration", map);
+		if (entity.equalsIgnoreCase("Event")) {
+			map.put("volunteer", volunteer);
+			return new ModelAndView("registerForEvent", map);
+		} else if (entity.equalsIgnoreCase("Course")) {
+			map.put("volunteer", courseRegistration);
+			return new ModelAndView("registerForCourse", map);
+		} else
+			map.put("message", "There seems to be an error. Please try again");
+		return new ModelAndView("error", map);
+
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "getEvents", method = RequestMethod.GET, produces = "application/json")
-	public String getEvents(@RequestBody String place, HttpServletRequest request, HttpServletResponse response)
+	@RequestMapping(value = "getEvents", method = RequestMethod.POST, produces = "application/json")
+	public String getEvents(@RequestParam String place, HttpServletRequest request, HttpServletResponse response)
 			throws ParseException {
 		int locationId = Integer.parseInt(request.getParameter("place"));
 		Location loc = new Location();
@@ -78,17 +90,47 @@ public class EventController {
 		List<Event> li = courseRosterService.getEventsForLocation(loc);
 		String str = "{ ";
 		for (Event event : li) {
-			str += "'" + event.getEventId() + "': " + "'" + event.format(event.getEventDate()) + "-"
-					+ event.getEventName() + "',";
+			str += "\"" + event.getEventId() + "\": " + "\"" + event.format(event.getEventDate()) + "-"
+					+ event.getEventName() + "\",";
 		}
+		str = str.substring(0, str.length() - 1);
 		str += " }";
 		System.out.println(str);
 		return str;
 	}
 
-	@RequestMapping(value = "register.action", method = RequestMethod.POST)
-	public String registerVolunteer(@ModelAttribute Registration volunteer) {
+	@ResponseBody
+	@RequestMapping(value = "getCourses", method = RequestMethod.POST, produces = "application/json")
+	public String getCourses(@RequestParam String place, HttpServletRequest request, HttpServletResponse response)
+			throws ParseException {
+		int locationId = Integer.parseInt(request.getParameter("place"));
+		Location loc = new Location();
+		loc.setLocationId(locationId);
+		List<Course> li = courseRosterService.getCoursesForLocation(loc);
+		String str = "{ ";
+		for (Course course : li) {
+			str += "\"" + course.getCourseId() + "\": " + "\"" + course.format(course.getStartDate()) + "-"
+					+ course.getCourseName() + "\",";
+		}
+		str = str.substring(0, str.length() - 1);
+		str += " }";
+		System.out.println(str);
+		return str;
+	}
+
+	@RequestMapping(value = "registerForEvent.action", method = RequestMethod.POST)
+	public String registerVolunteer(@ModelAttribute EventRegistration volunteer) {
 		int registrationId = courseRosterService.registerForEvent(volunteer);
+		if (registrationId > 0) {
+			return "redirect:/success?message=You%20are%20successfully%20registered%2E%20With%20Id%20" + registrationId;
+		} else {
+			return "redirect:/error?message=Some%20Error%20Occurred%2E%20Please%20Try%20After%20Sometime";
+		}
+	}
+
+	@RequestMapping(value = "registerForCourse.action", method = RequestMethod.POST)
+	public String registerVolunteer(@ModelAttribute CourseRegistration volunteer) {
+		int registrationId = courseRosterService.registerForCourse(volunteer);
 		if (registrationId > 0) {
 			return "redirect:/success?message=You%20are%20successfully%20registered%2E%20With%20Id%20" + registrationId;
 		} else {
@@ -111,16 +153,23 @@ public class EventController {
 	@RequestMapping(value = "viewevents.get", method = RequestMethod.GET)
 	public ModelAndView viewEvents() {
 		Map<String, Object> map = new HashMap<String, Object>();
-		List<Location> locations = courseRosterService.getAllLocations();
-		List<Event> li = new ArrayList<>();
-		for (Location location : locations) {
-			li.addAll(courseRosterService.getEventsForLocation(location));
-		}
-		Collections.sort(li,new EventComparator());
+		List<Event> li = courseRosterService.getActiveEvents();
+		Collections.sort(li, new EventComparator());
 		map.put("events", li);
+		map.put("entity", 0);
 		return new ModelAndView("information", map);
 	}
-	
+
+	@RequestMapping(value = "viewcourses.get", method = RequestMethod.GET)
+	public ModelAndView viewCourses() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		List<Course> li = courseRosterService.getActiveCoures();
+		Collections.sort(li, new CourseComparator());
+		map.put("courses", li);
+		map.put("entity", 1);
+		return new ModelAndView("information", map);
+	}
+
 	@RequestMapping(value = "aboutus.get", method = RequestMethod.GET)
 	public String getAboutUs() {
 		return "aboutus";

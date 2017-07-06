@@ -23,7 +23,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
-<title>Registration</title>
+<title>Register for Course</title>
 <script type="text/javascript">
 	function validate() {
 		var name = document.getElementById("name").value;
@@ -31,11 +31,11 @@
 		var phone = document.getElementById("phone").value;
 		var email = document.getElementById("email").value;
 		var location = document.getElementById("location").value;
-		var event = document.getElementById("eventName").value;
+		var course = document.getElementById("courseName").value;
 
 		var emailCheck = /[\w-\.+]@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
 		var nameCheck = /[a-zA-Z ]{3,20}$/;
-		var idCheck = /^[M][0-9]{7}$/;
+		var idCheck = /^[M,m][0-9]{7}$/;
 		var phoneCheck = /^[9,8,7][0-9]{9}$/;
 
 		if (name == "") {
@@ -94,14 +94,14 @@
 			document.getElementById("locationError").innerHTML = "Please Select a Location";
 			document.getElementById("location").focus();
 			return false;
-		} else if (event == "0") {
+		} else if (course == "0") {
 			document.getElementById("nameError").innerHTML = "";
 			document.getElementById("employeeIdError").innerHTML = "";
 			document.getElementById("emailError").innerHTML = "";
 			document.getElementById("phoneError").innerHTML = "";
 			document.getElementById("locationError").innerHTML = "";
-			document.getElementById("eventError").innerHTML = "Please Select an Event";
-			document.getElementById("eventName").focus();
+			document.getElementById("courseError").innerHTML = "Please Select an Course";
+			document.getElementById("courseName").focus();
 			return false;
 		} else {
 			return true;
@@ -111,26 +111,27 @@
 		$('#location').change(function() {
 			var optionSelected = $("option:selected", this);
 			var val = this.value;
-			$('#eventName').empty();
+			$('#courseName').empty();
 			ajaxLoad(val);
 		});
 	});
 	function ajaxLoad(location) {
 		$.ajax({
-			type : "get",
-			contentType : "application/text",
-			url : "getEvents?place="+location,
+			type : "post",
+			contentType : "application/json",
+			dataType : "json",
+			url : "getCourses?place=" + location,
 			data : {
-				
+
 			},
 			success : function(data) {
-				var json = JSON.stringify(eval("(" + data + ")"));
-				var data1 = JSON.parse(json);
-				$('#eventName').append(
+/* 				var json = JSON.stringify(eval("(" + data + ")"));
+				var data1 = JSON.parse(json); */
+				$('#courseName').append(
 						$("<option></option>").attr("value", 0).text(
-								"Select Event..."));
-				$.each(data1, function(key, value) {
-					$('#eventName').append(
+								"Select Course..."));
+				$.each(data, function(key, value) {
+					$('#courseName').append(
 							$("<option></option>").attr("value", key).text(
 									value));
 				});
@@ -149,7 +150,7 @@
 		document.getElementById("phone").value = "";
 		document.getElementById("email").value = "";
 		document.getElementById("location").value = "0";
-		document.getElementById("eventName").value = "0";
+		document.getElementById("courseName").value = "0";
 	}
 
 	//window.onload = init;
@@ -159,8 +160,8 @@
 	onload="init()">
 	<jsp:include page="header.jsp" />
 	<form:form id="registration" onsubmit="return validate();"
-		class="form-horizontal" method="post" action="register.action"
-		commandName="volunteer">
+		class="form-horizontal" method="post"
+		action="registerForCourse.action" commandName="volunteer">
 		<div class="container">
 			<div class="jumbotron">
 				<div class="form-group">
@@ -231,14 +232,14 @@
 						<div class="col-sm-2"></div>
 						<label class="col-sm-2" for="location">Select Location</label>
 						<div class="col-sm-5">
-							<form:select path="event.location.locationId" id="location"
+							<form:select path="course.location.locationId" id="location"
 								class="form-control" onchange="display(this.value)">
 								<form:option value="0">Select location..</form:option>
 								<jstl:forEach items="${locations}" var="location">
 									<form:option value="${location.locationId}"> ${location.locationDetails} </form:option>
 								</jstl:forEach>
 							</form:select>
-							<form:errors path="event.location.locationId" cssClass="error"></form:errors>
+							<form:errors path="course.location.locationId" cssClass="error"></form:errors>
 							<span id="locationError"></span>
 						</div>
 						<div class="col-sm-3"></div>
@@ -247,17 +248,17 @@
 				<div class="form-group">
 					<div class="row">
 						<div class="col-sm-2"></div>
-						<label class="col-sm-2" for="eventName">Select event</label>
+						<label class="col-sm-2" for="courseName">Select Course</label>
 						<div class="col-sm-5">
-							<form:select path="event.eventId" id="eventName"
+							<form:select path="course.courseId" id="courseName"
 								class="form-control">
-								<form:option value="0">Select Event..</form:option>
+								<form:option value="0">Select Course..</form:option>
 								<%-- <jstl:forEach items="${events}" var="events1">
 <form:option value="${events1.eventId}">${events1.eventName} - ${events1.eventName}</form:option>
 </jstl:forEach> --%>
 							</form:select>
-							<form:errors path="event.eventId" cssClass="error"></form:errors>
-							<span id="eventError"></span>
+							<form:errors path="course.courseId" cssClass="error"></form:errors>
+							<span id="courseError"></span>
 						</div>
 						<div class="col-sm-3"></div>
 					</div>

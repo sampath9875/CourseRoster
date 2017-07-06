@@ -20,20 +20,21 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
 <link rel="stylesheet"
 	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
-<title>Event Information</title>
+<title>Course Information</title>
 </head>
 <body style="background-color: lavendar; overflow: hidden">
 	<jsp:include page="adminheader.jsp" />
 	<div class="container">
-		<table class="table table-striped">
-			<tr>
-				<td><jstl:out value="${event.eventName}"></jstl:out></td>
-				<td><jstl:out value="${event.format(event.getEventDate())}"></jstl:out></td>
-				<td><jstl:out value="${event.location.locationDetails}"></jstl:out></td>
-			</tr>
-		</table>
 		<jstl:choose>
 			<jstl:when test="${fn:length(registrations) gt 0}">
+				<table class="table table-striped">
+					<tr>
+						<td><jstl:out value="${course.courseName}"></jstl:out></td>
+						<td><jstl:out value="${course.format(course.getStartDate())}"></jstl:out></td>
+						<td><jstl:out value="${course.format(course.getEndDate())}"></jstl:out></td>
+						<td><jstl:out value="${course.location.locationDetails}"></jstl:out></td>
+					</tr>
+				</table>
 				<table class="table table-striped">
 					<thead>
 						<tr class="info">
@@ -57,7 +58,7 @@
 			</jstl:when>
 			<jstl:otherwise>
 				<div class="jumbotron">
-					<h4>There are no registrations for the given event</h4>
+					<h4>There are no registrations for the given course</h4>
 					<p>Please click here to go to home page</p>
 					<a href="adminHome.get" class="btn btn-primary">Home</a>
 				</div>

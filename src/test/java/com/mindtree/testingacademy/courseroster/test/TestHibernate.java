@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -17,13 +18,13 @@ import org.testng.annotations.Test;
 
 import com.mindtree.testingacademy.courseroster.entities.Event;
 import com.mindtree.testingacademy.courseroster.entities.Location;
-import com.mindtree.testingacademy.courseroster.entities.Registration;
+import com.mindtree.testingacademy.courseroster.entities.EventRegistration;
 import com.mindtree.testingacademy.courseroster.entities.User;
 import com.mindtree.testingacademy.courseroster.hibernate.CourseRosterDao;
 
 @ContextConfiguration(locations = {
 		"classpath*:/test-dispatcher-servlet.xml" })
-public class TestHibernate  {
+public class TestHibernate extends AbstractTestNGSpringContextTests {
 
 	@Autowired
 	private CourseRosterDao courseRosterDao;
@@ -31,7 +32,7 @@ public class TestHibernate  {
 	private Location location1, location2, location3, location4;
 	private Event event1, event2, event3, event4, event5, event6;
 	private User user1, user2;
-	private Registration reg1, reg2, reg3, reg4, reg5, reg6;
+	private EventRegistration reg1, reg2, reg3, reg4, reg5, reg6;
 
 	@Rollback(false)
 	@Test(priority = 1)
@@ -140,12 +141,12 @@ public class TestHibernate  {
 		event5 = new Event("Health is Wealth", location3, new Date(current + TimeUnit.DAYS.toMillis(2)), user1);
 		event6 = new Event("Sharing is Caring", location2, new Date(current + TimeUnit.DAYS.toMillis(3)), user2);
 
-		reg1 = new Registration("M1030491", "Some Nam1", "volunteer@event.com", "9764589232", event1);
-		reg2 = new Registration("M1030492", "Some Nam2", "volunteer@event.com", "9764589232", event2);
-		reg3 = new Registration("M1030493", "Some Nam3", "volunteer@event.com", "9764589232", event3);
-		reg4 = new Registration("M1030494", "Some Nam4", "volunteer@event.com", "9764589232", event4);
-		reg5 = new Registration("M1030495", "Some Nam5", "volunteer@event.com", "9764589232", event3);
-		reg6 = new Registration("M1030496", "Some Nam6", "volunteer@event.com", "9764589232", event2);
+		reg1 = new EventRegistration("M1030491", "Some Nam1", "volunteer@event.com", "9764589232", event1);
+		reg2 = new EventRegistration("M1030492", "Some Nam2", "volunteer@event.com", "9764589232", event2);
+		reg3 = new EventRegistration("M1030493", "Some Nam3", "volunteer@event.com", "9764589232", event3);
+		reg4 = new EventRegistration("M1030494", "Some Nam4", "volunteer@event.com", "9764589232", event4);
+		reg5 = new EventRegistration("M1030495", "Some Nam5", "volunteer@event.com", "9764589232", event3);
+		reg6 = new EventRegistration("M1030496", "Some Nam6", "volunteer@event.com", "9764589232", event2);
 	}
 
 	@AfterClass

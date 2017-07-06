@@ -36,17 +36,17 @@ public class Event {
 
 	@Column(name = "Event_Name", nullable = false)
 	private String eventName;
-	
+
 	@Column(name = "Event_Details")
 	private String eventDetails;
-	
+
 	@ManyToOne(targetEntity = Location.class)
 	@Cascade(org.hibernate.annotations.CascadeType.SAVE_UPDATE)
 	@JoinColumn(name = "Location_Id", nullable = false)
 	private Location location;
 
 	@Column(name = "Event_Date", nullable = false)
-	@DateTimeFormat(pattern="MM/dd/yyyy")
+	@DateTimeFormat(pattern = "MM/dd/yyyy")
 	private Date eventDate;
 
 	@ManyToOne(targetEntity = User.class, cascade = CascadeType.ALL)
@@ -168,7 +168,6 @@ public class Event {
 		return new SimpleDateFormat("dd MMM yyyy").format(date);
 	}
 
-	
 	/**
 	 * @return
 	 */
@@ -193,15 +192,11 @@ public class Event {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		Event evt = (Event) obj;
+		if (evt.getEventId() == this.eventId)
 			return true;
-		if (obj == null)
+		else
 			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Event other = (Event) obj;
-		if (eventId != other.eventId)
-			return false;
-		return true;
 	}
+
 }

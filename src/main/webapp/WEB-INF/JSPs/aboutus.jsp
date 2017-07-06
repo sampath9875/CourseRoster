@@ -26,7 +26,7 @@
 	<div class="container">
 		<div class="row">
 			<div class="jumbotron">
-				<h2>Social App</h2>
+				<h2>Course Roster</h2>
 				<p>This application is developed as a part of SDET training by
 					Maneendra and Shanmukha</p>
 			</div>

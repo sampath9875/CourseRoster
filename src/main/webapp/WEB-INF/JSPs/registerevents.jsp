@@ -127,7 +127,7 @@
 						<div class="col-sm-2"></div>
 						<label class="col-sm-2" for="phone">Select date</label>
 						<div class="col-sm-5">
-							<div class="input-group date" data-provide="datepicker">
+							<div class="input-group date" data-provide="datepicker" id="datepicker1">
 								<form:input type="text" class="form-control" id="eventDate"
 									readonly="readonly" path="eventDate" />
 								<span id="dateError"></span>
@@ -140,8 +140,12 @@
 								var today = new Date(nowDate.getFullYear(),
 										nowDate.getMonth(), nowDate.getDate(),
 										0, 0, 0, 0);
-								$('.datepicker').datepicker({
-									todayHighlight : 1
+								$('#datepicker1').datepicker({
+									todayHighlight : 1,
+									startDate : today,
+									value : today,
+									daysOfWeekDisabled : [ 0, 6 ],
+									autoclose: true
 								});
 							</script>
 						</div>
