@@ -133,12 +133,12 @@ public class CourseRosterService {
 	public List<CourseRegistration> getRegistrationsForCourse(Course course) {
 		return courseRosterDao.getRegistrationsForCourse(course);
 	}
-	
-	public List<Event> getActiveEvents(){
+
+	public List<Event> getActiveEvents() {
 		return courseRosterDao.getActiveEvents();
 	}
-	
-	public List<Course> getActiveCoures(){
+
+	public List<Course> getActiveCoures() {
 		return courseRosterDao.getActiveCourses();
 	}
 
@@ -219,6 +219,11 @@ public class CourseRosterService {
 	public String getRecurrenceString(Course course) {
 		Recurrence rec = course.getRecurrence();
 
+		java.util.Calendar cal = java.util.Calendar.getInstance();
+		cal.setTime(course.getStartDate());
+
+		int day = cal.get(java.util.Calendar.DAY_OF_WEEK);
+
 		long difference = course.getEndDate().getTime() - course.getStartDate().getTime();
 
 		int days = (int) difference / (1000 * 60 * 60 * 24);
@@ -228,13 +233,10 @@ public class CourseRosterService {
 
 		switch (rec) {
 		case WEEKLY:
-			recurrenceString += "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;COUNT=" + (count/5 + 1);
+			recurrenceString += "FREQ=WEEKLY;BYDAY=" + getDayString(day) + ";COUNT=" + (count / 5 + 1);
 			break;
 		case DAILY:
 			recurrenceString += "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;COUNT=" + count;
-			break;
-		case BIDIURNAL:
-			recurrenceString += "FREQ=WEEKLY;BYDAY=MO,TU,WE,TH,FR;INTERVAL=2;COUNT=" + count/2;
 			break;
 		case ONCE:
 			recurrenceString += "FREQ=DAILY;BYDAY=MO,TU,WE,TH,FR;";
@@ -245,5 +247,26 @@ public class CourseRosterService {
 		}
 
 		return recurrenceString;
+	}
+
+	public String getDayString(int i) {
+		switch (i) {
+		case 2:
+			return "MO";
+		case 3:
+			return "TU";
+		case 4:
+			return "WE";
+		case 5:
+			return "TH";
+		case 6:
+			return "FR";
+		case 7:
+			return "SA";
+		case 1:
+			return "SU";
+		default:
+			return "SU";
+		}
 	}
 }

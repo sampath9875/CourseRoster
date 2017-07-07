@@ -126,7 +126,7 @@
 								<td><a href="viewVolunteers?courseId=${course.courseId}">Click
 										to View Registrations</a></td>
 								<td><a
-									href="getCalendar?entity=Course&id=${course.courseId}">CLick
+									href="getCalendar?entity=Course&id=${course.courseId}">Click
 										here to download the Course Calendar</a>
 							</tr>
 						</jstl:forEach>

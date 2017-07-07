@@ -152,7 +152,7 @@ function validateForm(){
 			return false;
 	};
 </script>
-<title>Event Registration</title>
+<title>Course Registration</title>
 </head>
 <body style="background-color: lavendar; overflow: hidden">
 	<jsp:include page="adminheader.jsp" />
